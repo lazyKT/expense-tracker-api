@@ -1,7 +1,9 @@
 package com.lwin.expense_tracker.dto.user;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+@Data
 public class SocialLoginDto {
 
     @NotNull(message = "User email must not be null value")

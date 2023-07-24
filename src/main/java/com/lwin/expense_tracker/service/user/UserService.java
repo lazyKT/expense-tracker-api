@@ -10,13 +10,13 @@ public interface UserService {
 
     SocialLogin createSocialUser (SocialLoginDto socialLoginDto);
 
-    EmailLoginDto createEmailLoginUser (EmailLoginDto emailLoginDto);
+    EmailLogin createEmailLoginUser (EmailLoginDto emailLoginDto);
 
     EmailLogin login (String userEmail, String password);
 
     User getUser (int userId);
 
-    User updateUser (int userId);
+    User updateUser (int userId, EmailLogin emailLogin);
 
     String uploadAvatar (int userId);
 }

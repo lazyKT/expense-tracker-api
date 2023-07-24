@@ -1,4 +1,4 @@
-package com.lwin.expense_tracker.repository;
+package com.lwin.expense_tracker.repository.budgetPlan;
 
 public class BudgetPlanRepositoryImpl {
 

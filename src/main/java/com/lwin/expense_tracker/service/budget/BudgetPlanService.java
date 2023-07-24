@@ -2,6 +2,7 @@ package com.lwin.expense_tracker.service.budget;
 
 import com.lwin.expense_tracker.dto.BudgetPlanDto;
 import com.lwin.expense_tracker.entity.budget.BudgetPlan;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 

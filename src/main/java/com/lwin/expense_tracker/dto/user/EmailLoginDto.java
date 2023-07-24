@@ -1,8 +1,10 @@
 package com.lwin.expense_tracker.dto.user;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+@Data
 public class EmailLoginDto {
 
     @NotNull(message = "User email must not be null value")
