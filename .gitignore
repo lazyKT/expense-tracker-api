@@ -30,7 +30,7 @@ build/
 !**/src/test/**/build/
 
 ### Certificates ###
-!**/src/main/resources/certs/
+src/main/resources/cert
 
 ### VS Code ###
 .vscode/
