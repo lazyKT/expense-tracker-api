@@ -1,5 +1,6 @@
 package com.lwin.expense_tracker.service;
 
+import com.lwin.expense_tracker.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +27,13 @@ public class TokenService {
     }
 
 
-    public String generateToken (Authentication authentication) {
+    public String generateToken (String userName) {
         Instant now = Instant.now();
-        LOG.debug("Authorities:  {}", authentication.getAuthorities());
-        String scope = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName())
-                .claim("scope", scope)
+                .subject(userName)
                 .build();
         return this.encoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
     }

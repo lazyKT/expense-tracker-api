@@ -2,6 +2,7 @@ package com.lwin.expense_tracker.controller.user;
 
 
 import com.lwin.expense_tracker.dto.user.AuthRequest;
+import com.lwin.expense_tracker.dto.user.RegisterRequest;
 import com.lwin.expense_tracker.entity.user.User;
 import com.lwin.expense_tracker.service.UserService;
 import jakarta.validation.Valid;
@@ -24,8 +25,8 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String addNewUser (@RequestBody @Valid AuthRequest authRequest) {
-        User user = new User(authRequest.getEmail(), authRequest.getPassword(), authRequest.getRoles());
+    public String addNewUser (@RequestBody @Valid RegisterRequest registerRequest) {
+        User user = new User(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getRoles());
         return userService.addUser(user);
     }
 }

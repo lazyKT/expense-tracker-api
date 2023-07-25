@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -60,7 +62,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         (auth) -> auth
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers("/test", "/users/register", "/h2-console/**").permitAll()
+                                .requestMatchers("/test", "/authenticate","/users/register").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(
@@ -99,5 +101,10 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
