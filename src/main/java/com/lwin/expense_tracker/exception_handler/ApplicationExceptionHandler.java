@@ -3,6 +3,8 @@ package com.lwin.expense_tracker.exception_handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,8 +29,25 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Map<String, String> handleHttpNotReadableException (HttpMessageNotReadableException exception) {
+        return this.genErrorMessage(exception);
+    }
+
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public Map<String, String> handleBadCredentialsException (BadCredentialsException exception) {
+        return this.genErrorMessage(exception);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public Map<String, String> handleUsernameNotFoundException (UsernameNotFoundException exception) {
+        return this.genErrorMessage(exception);
+    }
+
+    private Map<String, String> genErrorMessage (Exception e) {
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", exception.getMessage());
+        errorMap.put("errorMessage", e.getMessage());
         return errorMap;
     }
 }

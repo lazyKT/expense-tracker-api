@@ -7,6 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final UserInfoUserDetailsService userDetailsService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(TokenService.class);
 
     @Autowired
     public JwtAuthenticationFilter (TokenService tokenService, UserInfoUserDetailsService userDetailsService) {
@@ -43,9 +47,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             username = tokenService.getSubjectFromToken(token);
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
             if (tokenService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
