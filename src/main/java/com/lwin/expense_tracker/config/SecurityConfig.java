@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         (auth) -> auth
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers("/test", "/users/new", "/h2-console/**").permitAll()
+                                .requestMatchers("/test", "/users/register", "/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(
