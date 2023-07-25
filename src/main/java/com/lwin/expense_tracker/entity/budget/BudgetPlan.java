@@ -1,10 +1,7 @@
 package com.lwin.expense_tracker.entity.budget;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class BudgetPlan {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int budgetPlanId;
     private int budgetPlanOwner;
     private String budgetPlanName;
@@ -27,6 +24,13 @@ public class BudgetPlan {
     private Double budgetPlanMonthlyTarget; // target usage monthly
     private Double budgetPlanBalance;
     private BudgetPlanType budgetPlanType;
-    private String createdAt;
 
+    public BudgetPlan (int owner, String name, Double monthlyIncome, Double monthlyTarget, Double balance, BudgetPlanType type) {
+        this.budgetPlanOwner = owner;
+        this.budgetPlanName = name;
+        this.budgetPlanMonthlyTarget = monthlyTarget;
+        this.budgetPlanMonthlyIncome = monthlyIncome;
+        this.budgetPlanBalance = balance;
+        this.budgetPlanType = type;
+    }
 }

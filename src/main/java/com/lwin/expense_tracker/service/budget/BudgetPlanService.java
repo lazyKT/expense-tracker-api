@@ -1,22 +1,37 @@
 package com.lwin.expense_tracker.service.budget;
 
+
 import com.lwin.expense_tracker.dto.BudgetPlanDto;
 import com.lwin.expense_tracker.entity.budget.BudgetPlan;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.lwin.expense_tracker.entity.user.User;
+import com.lwin.expense_tracker.repository.budgetPlan.BudgetPlanRepository;
+import com.lwin.expense_tracker.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+@Service
+public class BudgetPlanService {
 
-public interface BudgetPlanService {
+    private final BudgetPlanRepository budgetPlanRepository;
+    private final UserService userService;
 
-    BudgetPlan saveBudgetPlan (BudgetPlanDto budgetPlanDto);
+    @Autowired
+    public BudgetPlanService (BudgetPlanRepository budgetPlanRepository, UserService userService) {
+        this.budgetPlanRepository = budgetPlanRepository;
+        this.userService = userService;
+    }
 
-    BudgetPlan getBudgetPlan (int budgetPlanId);
+    public BudgetPlan saveBudgetPlan (BudgetPlanDto dto, String userEmail) {
+        User user = userService.getUserByEmail(userEmail);
+        BudgetPlan budgetPlan = new BudgetPlan(
+            user.getId(),
+            dto.getBudgetPlanName(),
+            dto.getBudgetPlanMonthlyIncome(),
+            dto.getBudgetPlanMonthlyTarget(),
+            dto.getBudgetPlanBalance(),
+            dto.getBudgetPlanType()
+        );
+        return this.budgetPlanRepository.save(budgetPlan);
+    }
 
-    List<BudgetPlan> getBudgetPlans ();
-
-    BudgetPlan updateBudgetPlan (int budgetPlanId);
-
-    void deleteBudgetPlan (int budgetPlanId);
-
-    List<BudgetPlan> getBudgetPlansByOwnerId (int ownerId);
 }
