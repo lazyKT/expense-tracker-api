@@ -15,7 +15,7 @@ public class HomeController {
     private static final Logger LOG = LoggerFactory.getLogger(TokenService.class);
 
     @GetMapping("")
-    public String home(Principal principal) {
+    public String home (Principal principal) {
         return "Hello, " + principal.getName();
     }
 

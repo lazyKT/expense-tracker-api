@@ -1,6 +1,7 @@
 package com.lwin.expense_tracker.config;
 
 
+import com.lwin.expense_tracker.filter.JwtAuthenticationFilter;
 import com.lwin.expense_tracker.repository.user.UserRepository;
 import com.lwin.expense_tracker.service.TokenService;
 import com.nimbusds.jose.jwk.JWK;
@@ -33,6 +34,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -40,12 +42,14 @@ public class SecurityConfig {
 
     private final RsaKeyProperties rsaKeyProperties;
     private final UserRepository userRepository;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private static final Logger LOG = LoggerFactory.getLogger(TokenService.class);
 
     @Autowired
-    public SecurityConfig (RsaKeyProperties properties, UserRepository userRepository) {
+    public SecurityConfig (RsaKeyProperties properties, UserRepository userRepository, JwtAuthenticationFilter filter) {
         this.rsaKeyProperties = properties;
         this.userRepository = userRepository;
+        this.jwtAuthenticationFilter = filter;
     }
 
     @Bean
@@ -71,6 +75,8 @@ public class SecurityConfig {
                 .oauth2ResourceServer(
                     (oauth2) -> oauth2.jwt(Customizer.withDefaults())
                 )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // apply custom filter before request
                 .httpBasic(Customizer.withDefaults());
         LOG.debug("SecurityConfig::SecurityFilterChain::http {}", http);
         return http.build();
