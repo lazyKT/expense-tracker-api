@@ -4,10 +4,13 @@ package com.lwin.expense_tracker.service.budget;
 import com.lwin.expense_tracker.dto.BudgetPlanDto;
 import com.lwin.expense_tracker.entity.budget.BudgetPlan;
 import com.lwin.expense_tracker.entity.user.User;
+import com.lwin.expense_tracker.exceptions.BudgetPlanNotFoundException;
 import com.lwin.expense_tracker.repository.budgetPlan.BudgetPlanRepository;
 import com.lwin.expense_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BudgetPlanService {
@@ -32,6 +35,31 @@ public class BudgetPlanService {
             dto.getBudgetPlanType()
         );
         return this.budgetPlanRepository.save(budgetPlan);
+    }
+
+    public List<BudgetPlan> getBudgetPlans (String email) {
+        User user = this.userService.getUserByEmail(email);
+        return this.budgetPlanRepository.findByBudgetPlanOwner(user.getId());
+    }
+
+    public BudgetPlan getBudgetPlanById (int planId) throws BudgetPlanNotFoundException {
+        return this.budgetPlanRepository.findByBudgetPlanId(planId)
+                .orElseThrow(() -> new BudgetPlanNotFoundException("Not plan found with id, " + planId));
+    }
+
+    public BudgetPlan updateBudgetPlan (int planId, BudgetPlanDto updatedDto) throws BudgetPlanNotFoundException {
+        BudgetPlan plan = this.budgetPlanRepository.findByBudgetPlanId(planId)
+                .orElseThrow(() -> new BudgetPlanNotFoundException("Not plan found with id, " + planId));
+        this.fromDtoToEntity(updatedDto, plan);
+        return this.budgetPlanRepository.save(plan);
+    }
+
+    private void fromDtoToEntity (BudgetPlanDto dto, BudgetPlan budgetPlan) {
+        budgetPlan.setBudgetPlanBalance(dto.getBudgetPlanBalance());
+        budgetPlan.setBudgetPlanMonthlyIncome(dto.getBudgetPlanMonthlyIncome());
+        budgetPlan.setBudgetPlanName(dto.getBudgetPlanName());
+        budgetPlan.setBudgetPlanType(dto.getBudgetPlanType());
+        budgetPlan.setBudgetPlanMonthlyTarget(dto.getBudgetPlanMonthlyTarget());
     }
 
 }
