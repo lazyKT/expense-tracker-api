@@ -1,6 +1,7 @@
 package com.lwin.expense_tracker.controller.user;
 
 
+import com.lwin.expense_tracker.dto.user.AuthRequest;
 import com.lwin.expense_tracker.entity.user.User;
 import com.lwin.expense_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class UserController {
 
 
     @PostMapping("/new")
-    public String addNewUser (@RequestBody User user) {
+    public String addNewUser (@RequestBody AuthRequest authRequest) {
+        User user = new User(authRequest.getEmail(), authRequest.getPassword())
         return userService.addUser(user);
     }
 }
