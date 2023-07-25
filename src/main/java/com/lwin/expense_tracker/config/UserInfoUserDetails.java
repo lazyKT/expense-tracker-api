@@ -1,6 +1,6 @@
 package com.lwin.expense_tracker.config;
 
-import com.lwin.expense_tracker.entity.user.EmailLogin;
+import com.lwin.expense_tracker.entity.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,31 +12,31 @@ import java.util.stream.Collectors;
 
 public class UserInfoUserDetails implements UserDetails {
 
-    private final String userEmail;
-    private final String password;
-    private final List<GrantedAuthority> authorities;
+    private String email;
+    private String password;
+    private List<GrantedAuthority> authorities;
 
-    public UserInfoUserDetails (EmailLogin emailLogin) {
-        this.userEmail = emailLogin.getUserEmail();
-        this.password = emailLogin.getPassword();
-        this.authorities = Arrays.stream(emailLogin.getRoles().split(","))
+    public UserInfoUserDetails (User user) {
+        email = user.getEmail();
+        password = user.getPassword();
+        authorities = Arrays.stream(user.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return userEmail;
+        return this.email;
     }
 
     @Override

@@ -1,16 +1,10 @@
 package com.lwin.expense_tracker.repository.user;
 
-import com.lwin.expense_tracker.entity.user.EmailLogin;
 import com.lwin.expense_tracker.entity.user.User;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends CrudRepository<User, Integer> {
-
-    User findByUserId(int userId);
-
-    Optional<EmailLogin> findByUserEmail(String userEmail);
+public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findByEmail(String email);
 }

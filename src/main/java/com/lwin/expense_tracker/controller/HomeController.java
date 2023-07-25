@@ -20,8 +20,14 @@ public class HomeController {
     }
 
     @GetMapping("test")
-    public String test (Principal principal) {
+    public String test () {
         LOG.debug("HomeController::test::before::response");
+        return "Hello, insecurities";
+    }
+
+    @GetMapping("secure")
+    public String secureTest (Principal principal) {
+        LOG.debug("HomeController::secure::before::response");
         return "Hello, " + principal.getName();
     }
 }

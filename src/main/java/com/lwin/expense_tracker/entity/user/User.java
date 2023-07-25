@@ -2,37 +2,21 @@ package com.lwin.expense_tracker.entity.user;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "USER_TABLE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "USERS_TABLE")
+@Data
 @NoArgsConstructor
-public abstract class User {
+@AllArgsConstructor
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
-    private String userEmail;
-    private String joinedAt;
-    private String updatedAt;
-    private String avatarUrl;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String email;
+    private String password;
     private String roles;
-
-    public User (String userEmail, String joinedAt, String updatedAt, String avatarUrl) {
-        this.userEmail = userEmail;
-        this.joinedAt = joinedAt;
-        this.updatedAt = updatedAt;
-        this.avatarUrl = avatarUrl;
-    }
-
-    public String getUserEmail() {
-        return this.userEmail;
-    }
-
-    public String getAvatarUrl() { return this.avatarUrl; }
-
-    public int getUserId() { return this.userId; }
-
-    public String getRoles() { return this.roles; }
 }
