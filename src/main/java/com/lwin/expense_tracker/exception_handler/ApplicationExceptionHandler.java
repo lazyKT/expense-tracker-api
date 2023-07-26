@@ -1,6 +1,7 @@
 package com.lwin.expense_tracker.exception_handler;
 
 
+import com.lwin.expense_tracker.exceptions.TransactionNotFoundException;
 import com.lwin.expense_tracker.exceptions.UnAuthorizedResourceAcessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -46,6 +47,11 @@ public class ApplicationExceptionHandler {
         return this.genErrorMessage(exception);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({TransactionNotFoundException.class})
+    public Map<String, String> handleNotFoundException (Exception exception) {
+        return this.genErrorMessage(exception);
+    }
 
     private Map<String, String> genErrorMessage (Exception e) {
         Map<String, String> errorMap = new HashMap<>();
