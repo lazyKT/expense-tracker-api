@@ -1,6 +1,7 @@
 package com.lwin.expense_tracker.exception_handler;
 
 
+import com.lwin.expense_tracker.exceptions.UnAuthorizedResourceAcessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,10 +41,11 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public Map<String, String> handleUsernameNotFoundException (UsernameNotFoundException exception) {
+    @ExceptionHandler({UsernameNotFoundException.class, UnAuthorizedResourceAcessException.class})
+    public Map<String, String> handleUnAuthorizedException (Exception exception) {
         return this.genErrorMessage(exception);
     }
+
 
     private Map<String, String> genErrorMessage (Exception e) {
         Map<String, String> errorMap = new HashMap<>();

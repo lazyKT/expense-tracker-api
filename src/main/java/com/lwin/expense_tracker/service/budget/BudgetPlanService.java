@@ -5,6 +5,7 @@ import com.lwin.expense_tracker.dto.BudgetPlanDto;
 import com.lwin.expense_tracker.entity.budget.BudgetPlan;
 import com.lwin.expense_tracker.entity.user.User;
 import com.lwin.expense_tracker.exceptions.BudgetPlanNotFoundException;
+import com.lwin.expense_tracker.exceptions.UnAuthorizedResourceAcessException;
 import com.lwin.expense_tracker.repository.budgetPlan.BudgetPlanRepository;
 import com.lwin.expense_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,17 @@ public class BudgetPlanService {
                 .orElseThrow(() -> new BudgetPlanNotFoundException("Not plan found with id, " + planId));
         this.fromDtoToEntity(updatedDto, plan);
         return this.budgetPlanRepository.save(plan);
+    }
+
+
+    public void deleteBudgetPlan (int planId, String email) throws BudgetPlanNotFoundException, UnAuthorizedResourceAcessException {
+        int ownerId = this.userService.getUserIdByEmail(email);
+        BudgetPlan plan = this.getBudgetPlanById(planId);
+        if (ownerId == plan.getBudgetPlanOwner()) {
+            this.budgetPlanRepository.delete(plan);
+        } else {
+            throw new UnAuthorizedResourceAcessException("Unauthorized access to modify the resource.");
+        }
     }
 
     private void fromDtoToEntity (BudgetPlanDto dto, BudgetPlan budgetPlan) {

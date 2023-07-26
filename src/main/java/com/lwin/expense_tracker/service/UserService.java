@@ -30,4 +30,9 @@ public class UserService {
         return this.repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email " + email));
     }
+
+    public int getUserIdByEmail (String email) {
+        User user = this.getUserByEmail(email);
+        return user.getId();
+    }
 }
