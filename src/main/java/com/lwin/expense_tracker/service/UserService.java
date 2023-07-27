@@ -2,11 +2,14 @@ package com.lwin.expense_tracker.service;
 
 
 import com.lwin.expense_tracker.entity.user.User;
+import com.lwin.expense_tracker.exceptions.UserAlreadyExistedException;
 import com.lwin.expense_tracker.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,7 +23,11 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public String addUser (User user) {
+    public String addUser (User user) throws UserAlreadyExistedException {
+        Optional<User> result = this.repository.findByEmail(user.getEmail());
+        if (result.isPresent()) {
+            throw new UserAlreadyExistedException("User account already existed with the same email, " + user.getEmail());
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         this.repository.save(user);
         return "New user added";

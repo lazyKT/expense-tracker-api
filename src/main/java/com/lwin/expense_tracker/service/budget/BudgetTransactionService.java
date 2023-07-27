@@ -2,7 +2,6 @@ package com.lwin.expense_tracker.service.budget;
 
 
 import com.lwin.expense_tracker.dto.BudgetTransactionDto;
-import com.lwin.expense_tracker.entity.budget.BudgetPlan;
 import com.lwin.expense_tracker.entity.budget.BudgetTransaction;
 import com.lwin.expense_tracker.exceptions.BudgetPlanNotFoundException;
 import com.lwin.expense_tracker.exceptions.TransactionNotFoundException;
@@ -11,6 +10,7 @@ import com.lwin.expense_tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -57,7 +57,8 @@ public class BudgetTransactionService {
             userId,
             dto.getTransactionDetails(),
             dto.getTransactionAmount(),
-            dto.getTransactionType()
+            dto.getTransactionType(),
+            dto.getTransactionDateTime() == null ? new Date() : dto.getTransactionDateTime()
         );
     }
 

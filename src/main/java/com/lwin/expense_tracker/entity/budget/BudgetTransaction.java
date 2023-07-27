@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -26,12 +28,14 @@ public class BudgetTransaction {
     private String transactionDetails;
     private Double transactionAmount;
     private String transactionType;
+    private Date transactionDateTime;
 
-    public BudgetTransaction (int budgetPlanId, int userId, String transactionDetails, Double transactionAmount, String transactionType) {
+    public BudgetTransaction (int budgetPlanId, int userId, String transactionDetails, Double transactionAmount, String transactionType, Date transactionDateTime) {
         this.budgetPlanId = budgetPlanId;
         this.userId = userId;
         this.transactionDetails = transactionDetails;
         this.transactionAmount = transactionAmount;
         this.transactionType = transactionType;
+        this.transactionDateTime = transactionDateTime;
     }
 }

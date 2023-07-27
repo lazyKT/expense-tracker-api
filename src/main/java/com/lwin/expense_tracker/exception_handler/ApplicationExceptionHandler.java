@@ -3,6 +3,7 @@ package com.lwin.expense_tracker.exception_handler;
 
 import com.lwin.expense_tracker.exceptions.TransactionNotFoundException;
 import com.lwin.expense_tracker.exceptions.UnAuthorizedResourceAcessException;
+import com.lwin.expense_tracker.exceptions.UserAlreadyExistedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,8 +30,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public Map<String, String> handleHttpNotReadableException (HttpMessageNotReadableException exception) {
+    @ExceptionHandler({HttpMessageNotReadableException.class, UserAlreadyExistedException.class})
+    public Map<String, String> handleBadRequestResponse (Exception exception) {
         return this.genErrorMessage(exception);
     }
 

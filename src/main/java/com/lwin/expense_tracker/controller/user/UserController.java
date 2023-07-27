@@ -4,6 +4,7 @@ package com.lwin.expense_tracker.controller.user;
 import com.lwin.expense_tracker.dto.user.AuthRequest;
 import com.lwin.expense_tracker.dto.user.RegisterRequest;
 import com.lwin.expense_tracker.entity.user.User;
+import com.lwin.expense_tracker.exceptions.UserAlreadyExistedException;
 import com.lwin.expense_tracker.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String addNewUser (@RequestBody @Valid RegisterRequest registerRequest) {
+    public String addNewUser (@RequestBody @Valid RegisterRequest registerRequest) throws UserAlreadyExistedException {
         User user = new User(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getRoles());
         return userService.addUser(user);
     }
