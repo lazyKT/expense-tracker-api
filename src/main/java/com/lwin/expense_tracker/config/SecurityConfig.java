@@ -13,7 +13,6 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,7 +64,6 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         (auth) -> auth
-                                .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers("/test", "/authenticate","/users/register").permitAll()
                                 .anyRequest().authenticated()
                 )
