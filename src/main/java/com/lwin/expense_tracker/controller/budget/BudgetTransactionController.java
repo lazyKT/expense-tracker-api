@@ -4,6 +4,7 @@ package com.lwin.expense_tracker.controller.budget;
 import com.lwin.expense_tracker.dto.BudgetTransactionDto;
 import com.lwin.expense_tracker.entity.budget.BudgetTransaction;
 import com.lwin.expense_tracker.exceptions.BudgetPlanNotFoundException;
+import com.lwin.expense_tracker.exceptions.TransactionNotFoundException;
 import com.lwin.expense_tracker.service.budget.BudgetTransactionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class BudgetTransactionController {
     @GetMapping("")
     public List<BudgetTransaction> getUserTransactions (Principal principal) {
         return this.transactionService.getUserTransaction(principal.getName());
+    }
+
+    @GetMapping("/id/{transactionId}")
+    public BudgetTransaction getTransaction (@PathVariable int transactionId) throws TransactionNotFoundException {
+        return this.transactionService.getBudgetTransaction(transactionId);
     }
 
 }

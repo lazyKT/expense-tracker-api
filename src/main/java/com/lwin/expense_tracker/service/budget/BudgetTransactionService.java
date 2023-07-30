@@ -62,10 +62,4 @@ public class BudgetTransactionService {
         );
     }
 
-    private void castDtoToEntity (BudgetTransaction transaction, BudgetTransactionDto dto) {
-        transaction.setTransactionDetails(dto.getTransactionDetails());
-        transaction.setTransactionAmount(dto.getTransactionAmount());
-        transaction.setTransactionType(dto.getTransactionType());
-    }
-
 }
